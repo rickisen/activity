@@ -2,9 +2,10 @@ package pub
 
 import (
 	"context"
-	"github.com/go-fed/activity/streams/vocab"
 	"net/http"
 	"net/url"
+
+	"github.com/go-fed/activity/streams/vocab"
 )
 
 // FederatingProtocol contains behaviors an application needs to satisfy for the
@@ -121,4 +122,37 @@ type FederatingProtocol interface {
 	// Always called, regardless whether the Federated Protocol or Social
 	// API is enabled.
 	GetInbox(c context.Context, r *http.Request) (vocab.ActivityStreamsOrderedCollectionPage, error)
+	// ResolveInboxIRIs allows implementations to optionally override the default
+	// method of resolving inboxes for receiving actors.
+	//
+	// It is acceptable to not do anything here and just return the given
+	// receiver lists as remaining receivers like so:
+	//
+	// 	return []*url.URL{}, append(receivers, hiddenReceivers...), nil
+	//
+	// This function may be used by an implementer for multiple reasons,
+	// including to optimize network usage by reducing the amount of delivery
+	// targets through delivering to shared inboxes when possible, or maybe to
+	// add all known instances' shared inbox to the list of receiers when an
+	// activity is addressed to the public.
+	//
+	// Receivers are given as two groups (normal and hidden) in order to aid in
+	// determining the best method of handling shared inboxes, as hidden
+	// receivers should not have their inboxes replaced with a shared inbox. This
+	// is because both the bto and bcc fields are stripped prior delivery. If a
+	// hidden receiver has their inbox replaced with a shared inbox the receiving
+	// instance would have no way of knowing who the intended recipient was.
+	//
+	// Keep in mind that:
+	//
+	//   * Any receiver IRI may resolve into an Actor, or a Collection of Actors,
+	//     maybe even Collections of Collections of Actors etc.
+	//
+	//   * The library will still dereference and handle any remaining receivers
+	//     you return.
+	//
+	//   * The library only deduplicates the final list of inboxes after this
+	//     function is called. So duplicated values in the given receivers are
+	//     likely. And returning the same inbox multiple times is acceptable.
+	ResolveInboxIRIs(c context.Context, receivers []*url.URL, hiddenReceivers []*url.URL) (inboxes []*url.URL, remainingReceivers []*url.URL, err error)
 }

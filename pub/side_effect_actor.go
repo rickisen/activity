@@ -618,6 +618,7 @@ func (a *sideEffectActor) hasInboxForwardingValues(c context.Context, inboxIRI *
 // Only call if both the social and federated protocol are supported.
 func (a *sideEffectActor) prepare(c context.Context, outboxIRI *url.URL, activity Activity) (r []*url.URL, err error) {
 	// Get inboxes of recipients
+	normal := []*url.URL{}
 	if to := activity.GetActivityStreamsTo(); to != nil {
 		for iter := to.Begin(); iter != to.End(); iter = iter.Next() {
 			var val *url.URL
@@ -625,9 +626,10 @@ func (a *sideEffectActor) prepare(c context.Context, outboxIRI *url.URL, activit
 			if err != nil {
 				return
 			}
-			r = append(r, val)
+			normal = append(normal, val)
 		}
 	}
+	hidden := []*url.URL{}
 	if bto := activity.GetActivityStreamsBto(); bto != nil {
 		for iter := bto.Begin(); iter != bto.End(); iter = iter.Next() {
 			var val *url.URL
@@ -635,7 +637,7 @@ func (a *sideEffectActor) prepare(c context.Context, outboxIRI *url.URL, activit
 			if err != nil {
 				return
 			}
-			r = append(r, val)
+			hidden = append(hidden, val)
 		}
 	}
 	if cc := activity.GetActivityStreamsCc(); cc != nil {
@@ -645,7 +647,7 @@ func (a *sideEffectActor) prepare(c context.Context, outboxIRI *url.URL, activit
 			if err != nil {
 				return
 			}
-			r = append(r, val)
+			normal = append(normal, val)
 		}
 	}
 	if bcc := activity.GetActivityStreamsBcc(); bcc != nil {
@@ -655,7 +657,7 @@ func (a *sideEffectActor) prepare(c context.Context, outboxIRI *url.URL, activit
 			if err != nil {
 				return
 			}
-			r = append(r, val)
+			hidden = append(hidden, val)
 		}
 	}
 	if audience := activity.GetActivityStreamsAudience(); audience != nil {
@@ -665,9 +667,10 @@ func (a *sideEffectActor) prepare(c context.Context, outboxIRI *url.URL, activit
 			if err != nil {
 				return
 			}
-			r = append(r, val)
+			normal = append(normal, val)
 		}
 	}
+
 	// 1. When an object is being delivered to the originating actor's
 	//    followers, a server MAY reduce the number of receiving actors
 	//    delivered to by identifying all followers which share the same
@@ -676,11 +679,15 @@ func (a *sideEffectActor) prepare(c context.Context, outboxIRI *url.URL, activit
 	// 2. If an object is addressed to the Public special collection, a
 	//    server MAY deliver that object to all known sharedInbox endpoints
 	//    on the network.
+	foundInboxes, r, err := a.s2s.ResolveInboxIRIs(c, normal, hidden)
+	if err != nil {
+		return
+	}
+
 	r = filterURLs(r, IsPublic)
 
 	// first check if the implemented database logic can return any inboxes
 	// from our list of actor IRIs.
-	foundInboxesFromDB := []*url.URL{}
 	foundActorsFromDB := []*url.URL{}
 	for _, actorIRI := range r {
 		// BEGIN LOCK
@@ -697,7 +704,7 @@ func (a *sideEffectActor) prepare(c context.Context, outboxIRI *url.URL, activit
 		}
 		if inbox != nil {
 			// we have a hit
-			foundInboxesFromDB = append(foundInboxesFromDB, inbox)
+			foundInboxes = append(foundInboxes, inbox)
 			foundActorsFromDB = append(foundActorsFromDB, actorIRI)
 		}
 
@@ -732,7 +739,7 @@ func (a *sideEffectActor) prepare(c context.Context, outboxIRI *url.URL, activit
 	// combine this list of dereferenced inbox IRIs with the inboxes we already
 	// found in the db, to make a complete list of target IRIs
 	targets := []*url.URL{}
-	targets = append(targets, foundInboxesFromDB...)
+	targets = append(targets, foundInboxes...)
 	targets = append(targets, foundInboxesFromRemote...)
 
 	// Get inboxes of sender.

@@ -1116,6 +1116,14 @@ func TestDeliver(t *testing.T) {
 			mustParse(testFederatedInboxIRI2),
 		}
 		// Mock
+		mockFp.EXPECT().ResolveInboxIRIs(ctx,
+			[]*url.URL{mustParse(testFederatedActorIRI), mustParse(testFederatedActorIRI2)},
+			[]*url.URL{},
+		).Return(
+			[]*url.URL{},
+			[]*url.URL{mustParse(testFederatedActorIRI), mustParse(testFederatedActorIRI2)},
+			nil,
+		)
 		c.EXPECT().NewTransport(ctx, mustParse(testMyOutboxIRI), goFedUserAgent()).Return(
 			mockTp, nil)
 		mockFp.EXPECT().MaxDeliveryRecursionDepth(ctx).Return(1)
@@ -1155,6 +1163,14 @@ func TestDeliver(t *testing.T) {
 			mustParse(testFederatedInboxIRI2),
 		}
 		// Mock
+		mockFp.EXPECT().ResolveInboxIRIs(ctx,
+			[]*url.URL{},
+			[]*url.URL{mustParse(testFederatedActorIRI), mustParse(testFederatedActorIRI2)},
+		).Return(
+			[]*url.URL{},
+			[]*url.URL{mustParse(testFederatedActorIRI), mustParse(testFederatedActorIRI2)},
+			nil,
+		)
 		c.EXPECT().NewTransport(ctx, mustParse(testMyOutboxIRI), goFedUserAgent()).Return(
 			mockTp, nil)
 		mockFp.EXPECT().MaxDeliveryRecursionDepth(ctx).Return(1)
@@ -1193,6 +1209,14 @@ func TestDeliver(t *testing.T) {
 			mustParse(testFederatedInboxIRI2),
 		}
 		// Mock
+		mockFp.EXPECT().ResolveInboxIRIs(ctx,
+			[]*url.URL{mustParse(testFederatedActorIRI), mustParse(testFederatedActorIRI2)},
+			[]*url.URL{},
+		).Return(
+			[]*url.URL{},
+			[]*url.URL{mustParse(testFederatedActorIRI), mustParse(testFederatedActorIRI2)},
+			nil,
+		)
 		c.EXPECT().NewTransport(ctx, mustParse(testMyOutboxIRI), goFedUserAgent()).Return(
 			mockTp, nil)
 		mockFp.EXPECT().MaxDeliveryRecursionDepth(ctx).Return(1)
@@ -1232,6 +1256,14 @@ func TestDeliver(t *testing.T) {
 			mustParse(testFederatedInboxIRI2),
 		}
 		// Mock
+		mockFp.EXPECT().ResolveInboxIRIs(ctx,
+			[]*url.URL{},
+			[]*url.URL{mustParse(testFederatedActorIRI), mustParse(testFederatedActorIRI2)},
+		).Return(
+			[]*url.URL{},
+			[]*url.URL{mustParse(testFederatedActorIRI), mustParse(testFederatedActorIRI2)},
+			nil,
+		)
 		c.EXPECT().NewTransport(ctx, mustParse(testMyOutboxIRI), goFedUserAgent()).Return(
 			mockTp, nil)
 		mockFp.EXPECT().MaxDeliveryRecursionDepth(ctx).Return(1)
@@ -1270,6 +1302,14 @@ func TestDeliver(t *testing.T) {
 			mustParse(testFederatedInboxIRI2),
 		}
 		// Mock
+		mockFp.EXPECT().ResolveInboxIRIs(ctx,
+			[]*url.URL{mustParse(testFederatedActorIRI), mustParse(testFederatedActorIRI2)},
+			[]*url.URL{},
+		).Return(
+			[]*url.URL{},
+			[]*url.URL{mustParse(testFederatedActorIRI), mustParse(testFederatedActorIRI2)},
+			nil,
+		)
 		c.EXPECT().NewTransport(ctx, mustParse(testMyOutboxIRI), goFedUserAgent()).Return(
 			mockTp, nil)
 		mockFp.EXPECT().MaxDeliveryRecursionDepth(ctx).Return(1)
@@ -1309,6 +1349,14 @@ func TestDeliver(t *testing.T) {
 			mustParse(testFederatedInboxIRI2),
 		}
 		// Mock
+		mockFp.EXPECT().ResolveInboxIRIs(ctx,
+			[]*url.URL{mustParse(testFederatedActorIRI), mustParse(testFederatedActorIRI2), mustParse(PublicActivityPubIRI)},
+			[]*url.URL{},
+		).Return(
+			[]*url.URL{},
+			[]*url.URL{mustParse(testFederatedActorIRI), mustParse(testFederatedActorIRI2), mustParse(PublicActivityPubIRI)},
+			nil,
+		)
 		c.EXPECT().NewTransport(ctx, mustParse(testMyOutboxIRI), goFedUserAgent()).Return(
 			mockTp, nil)
 		mockFp.EXPECT().MaxDeliveryRecursionDepth(ctx).Return(1)
@@ -1346,6 +1394,11 @@ func TestDeliver(t *testing.T) {
 			mustParse(testFederatedInboxIRI2),
 		}
 		// Mock
+		mockFp.EXPECT().ResolveInboxIRIs(ctx, []*url.URL{mustParse(testAudienceIRI)}, []*url.URL{}).Return(
+			[]*url.URL{},
+			[]*url.URL{mustParse(testAudienceIRI)},
+			nil,
+		)
 		c.EXPECT().NewTransport(ctx, mustParse(testMyOutboxIRI), goFedUserAgent()).Return(
 			mockTp, nil)
 		mockFp.EXPECT().MaxDeliveryRecursionDepth(ctx).Return(2)
@@ -1385,6 +1438,11 @@ func TestDeliver(t *testing.T) {
 			mustParse(testFederatedInboxIRI2),
 		}
 		// Mock
+		mockFp.EXPECT().ResolveInboxIRIs(ctx, []*url.URL{mustParse(testAudienceIRI)}, []*url.URL{}).Return(
+			[]*url.URL{},
+			[]*url.URL{mustParse(testAudienceIRI)},
+			nil,
+		)
 		c.EXPECT().NewTransport(ctx, mustParse(testMyOutboxIRI), goFedUserAgent()).Return(
 			mockTp, nil)
 		mockFp.EXPECT().MaxDeliveryRecursionDepth(ctx).Return(2)
@@ -1420,6 +1478,11 @@ func TestDeliver(t *testing.T) {
 		to.AppendIRI(mustParse(testAudienceIRI))
 		act.SetActivityStreamsTo(to)
 		// Mock
+		mockFp.EXPECT().ResolveInboxIRIs(ctx, []*url.URL{mustParse(testAudienceIRI)}, []*url.URL{}).Return(
+			[]*url.URL{},
+			[]*url.URL{mustParse(testAudienceIRI)},
+			nil,
+		)
 		c.EXPECT().NewTransport(ctx, mustParse(testMyOutboxIRI), goFedUserAgent()).Return(
 			mockTp, nil)
 		mockFp.EXPECT().MaxDeliveryRecursionDepth(ctx).Return(1)
@@ -1471,6 +1534,25 @@ func TestDeliver(t *testing.T) {
 			mustParse(testFederatedInboxIRI2),
 		}
 		// Mock
+		mockFp.EXPECT().ResolveInboxIRIs(ctx,
+			[]*url.URL{
+				mustParse(testFederatedActorIRI), mustParse(testFederatedActorIRI2),
+				mustParse(testFederatedActorIRI), mustParse(testFederatedActorIRI2),
+			},
+			[]*url.URL{
+				mustParse(testFederatedActorIRI), mustParse(testFederatedActorIRI2),
+				mustParse(testFederatedActorIRI), mustParse(testFederatedActorIRI2),
+			},
+		).Return(
+			[]*url.URL{},
+			[]*url.URL{
+				mustParse(testFederatedActorIRI), mustParse(testFederatedActorIRI2),
+				mustParse(testFederatedActorIRI), mustParse(testFederatedActorIRI2),
+				mustParse(testFederatedActorIRI), mustParse(testFederatedActorIRI2),
+				mustParse(testFederatedActorIRI), mustParse(testFederatedActorIRI2),
+			},
+			nil,
+		)
 		c.EXPECT().NewTransport(ctx, mustParse(testMyOutboxIRI), goFedUserAgent()).Return(
 			mockTp, nil)
 		mockFp.EXPECT().MaxDeliveryRecursionDepth(ctx).Return(1)
@@ -1511,6 +1593,14 @@ func TestDeliver(t *testing.T) {
 			mustParse(testFederatedInboxIRI2),
 		}
 		// Mock
+		mockFp.EXPECT().ResolveInboxIRIs(ctx,
+			[]*url.URL{},
+			[]*url.URL{mustParse(testFederatedActorIRI), mustParse(testFederatedActorIRI2)},
+		).Return(
+			[]*url.URL{},
+			[]*url.URL{mustParse(testFederatedActorIRI), mustParse(testFederatedActorIRI2)},
+			nil,
+		)
 		c.EXPECT().NewTransport(ctx, mustParse(testMyOutboxIRI), goFedUserAgent()).Return(
 			mockTp, nil)
 		mockFp.EXPECT().MaxDeliveryRecursionDepth(ctx).Return(1)
@@ -1551,6 +1641,14 @@ func TestDeliver(t *testing.T) {
 			mustParse(testFederatedInboxIRI2),
 		}
 		// Mock
+		mockFp.EXPECT().ResolveInboxIRIs(ctx,
+			[]*url.URL{},
+			[]*url.URL{mustParse(testFederatedActorIRI), mustParse(testFederatedActorIRI2)},
+		).Return(
+			[]*url.URL{},
+			[]*url.URL{mustParse(testFederatedActorIRI), mustParse(testFederatedActorIRI2)},
+			nil,
+		)
 		c.EXPECT().NewTransport(ctx, mustParse(testMyOutboxIRI), goFedUserAgent()).Return(
 			mockTp, nil)
 		mockFp.EXPECT().MaxDeliveryRecursionDepth(ctx).Return(1)
@@ -1588,6 +1686,14 @@ func TestDeliver(t *testing.T) {
 			mustParse(testFederatedInboxIRI2),
 		}
 		// Mock
+		mockFp.EXPECT().ResolveInboxIRIs(ctx,
+			[]*url.URL{mustParse(testFederatedActorIRI), mustParse(testFederatedActorIRI2)},
+			[]*url.URL{},
+		).Return(
+			[]*url.URL{},
+			[]*url.URL{mustParse(testFederatedActorIRI), mustParse(testFederatedActorIRI2)},
+			nil,
+		)
 		c.EXPECT().NewTransport(ctx, mustParse(testMyOutboxIRI), goFedUserAgent()).Return(
 			mockTp, nil)
 		mockFp.EXPECT().MaxDeliveryRecursionDepth(ctx).Return(1)
@@ -1627,6 +1733,14 @@ func TestDeliver(t *testing.T) {
 		}
 		expectErr := fmt.Errorf("test error")
 		// Mock
+		mockFp.EXPECT().ResolveInboxIRIs(ctx,
+			[]*url.URL{mustParse(testFederatedActorIRI), mustParse(testFederatedActorIRI2)},
+			[]*url.URL{},
+		).Return(
+			[]*url.URL{},
+			[]*url.URL{mustParse(testFederatedActorIRI), mustParse(testFederatedActorIRI2)},
+			nil,
+		)
 		c.EXPECT().NewTransport(ctx, mustParse(testMyOutboxIRI), goFedUserAgent()).Return(
 			mockTp, nil)
 		mockFp.EXPECT().MaxDeliveryRecursionDepth(ctx).Return(1)

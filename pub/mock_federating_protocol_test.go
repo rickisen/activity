@@ -6,52 +6,38 @@ package pub
 
 import (
 	context "context"
-	vocab "github.com/go-fed/activity/streams/vocab"
-	gomock "github.com/golang/mock/gomock"
 	http "net/http"
 	url "net/url"
 	reflect "reflect"
+
+	vocab "github.com/go-fed/activity/streams/vocab"
+	gomock "github.com/golang/mock/gomock"
 )
 
-// MockFederatingProtocol is a mock of FederatingProtocol interface
+// MockFederatingProtocol is a mock of FederatingProtocol interface.
 type MockFederatingProtocol struct {
 	ctrl     *gomock.Controller
 	recorder *MockFederatingProtocolMockRecorder
 }
 
-// MockFederatingProtocolMockRecorder is the mock recorder for MockFederatingProtocol
+// MockFederatingProtocolMockRecorder is the mock recorder for MockFederatingProtocol.
 type MockFederatingProtocolMockRecorder struct {
 	mock *MockFederatingProtocol
 }
 
-// NewMockFederatingProtocol creates a new mock instance
+// NewMockFederatingProtocol creates a new mock instance.
 func NewMockFederatingProtocol(ctrl *gomock.Controller) *MockFederatingProtocol {
 	mock := &MockFederatingProtocol{ctrl: ctrl}
 	mock.recorder = &MockFederatingProtocolMockRecorder{mock}
 	return mock
 }
 
-// EXPECT returns an object that allows the caller to indicate expected use
+// EXPECT returns an object that allows the caller to indicate expected use.
 func (m *MockFederatingProtocol) EXPECT() *MockFederatingProtocolMockRecorder {
 	return m.recorder
 }
 
-// PostInboxRequestBodyHook mocks base method
-func (m *MockFederatingProtocol) PostInboxRequestBodyHook(c context.Context, r *http.Request, activity Activity) (context.Context, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "PostInboxRequestBodyHook", c, r, activity)
-	ret0, _ := ret[0].(context.Context)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
-}
-
-// PostInboxRequestBodyHook indicates an expected call of PostInboxRequestBodyHook
-func (mr *MockFederatingProtocolMockRecorder) PostInboxRequestBodyHook(c, r, activity interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "PostInboxRequestBodyHook", reflect.TypeOf((*MockFederatingProtocol)(nil).PostInboxRequestBodyHook), c, r, activity)
-}
-
-// AuthenticatePostInbox mocks base method
+// AuthenticatePostInbox mocks base method.
 func (m *MockFederatingProtocol) AuthenticatePostInbox(c context.Context, w http.ResponseWriter, r *http.Request) (context.Context, bool, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "AuthenticatePostInbox", c, w, r)
@@ -61,13 +47,13 @@ func (m *MockFederatingProtocol) AuthenticatePostInbox(c context.Context, w http
 	return ret0, ret1, ret2
 }
 
-// AuthenticatePostInbox indicates an expected call of AuthenticatePostInbox
+// AuthenticatePostInbox indicates an expected call of AuthenticatePostInbox.
 func (mr *MockFederatingProtocolMockRecorder) AuthenticatePostInbox(c, w, r interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "AuthenticatePostInbox", reflect.TypeOf((*MockFederatingProtocol)(nil).AuthenticatePostInbox), c, w, r)
 }
 
-// Blocked mocks base method
+// Blocked mocks base method.
 func (m *MockFederatingProtocol) Blocked(c context.Context, actorIRIs []*url.URL) (bool, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Blocked", c, actorIRIs)
@@ -76,13 +62,27 @@ func (m *MockFederatingProtocol) Blocked(c context.Context, actorIRIs []*url.URL
 	return ret0, ret1
 }
 
-// Blocked indicates an expected call of Blocked
+// Blocked indicates an expected call of Blocked.
 func (mr *MockFederatingProtocolMockRecorder) Blocked(c, actorIRIs interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Blocked", reflect.TypeOf((*MockFederatingProtocol)(nil).Blocked), c, actorIRIs)
 }
 
-// FederatingCallbacks mocks base method
+// DefaultCallback mocks base method.
+func (m *MockFederatingProtocol) DefaultCallback(c context.Context, activity Activity) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "DefaultCallback", c, activity)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// DefaultCallback indicates an expected call of DefaultCallback.
+func (mr *MockFederatingProtocolMockRecorder) DefaultCallback(c, activity interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DefaultCallback", reflect.TypeOf((*MockFederatingProtocol)(nil).DefaultCallback), c, activity)
+}
+
+// FederatingCallbacks mocks base method.
 func (m *MockFederatingProtocol) FederatingCallbacks(c context.Context) (FederatingWrappedCallbacks, []interface{}, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "FederatingCallbacks", c)
@@ -92,55 +92,13 @@ func (m *MockFederatingProtocol) FederatingCallbacks(c context.Context) (Federat
 	return ret0, ret1, ret2
 }
 
-// FederatingCallbacks indicates an expected call of FederatingCallbacks
+// FederatingCallbacks indicates an expected call of FederatingCallbacks.
 func (mr *MockFederatingProtocolMockRecorder) FederatingCallbacks(c interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "FederatingCallbacks", reflect.TypeOf((*MockFederatingProtocol)(nil).FederatingCallbacks), c)
 }
 
-// DefaultCallback mocks base method
-func (m *MockFederatingProtocol) DefaultCallback(c context.Context, activity Activity) error {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "DefaultCallback", c, activity)
-	ret0, _ := ret[0].(error)
-	return ret0
-}
-
-// DefaultCallback indicates an expected call of DefaultCallback
-func (mr *MockFederatingProtocolMockRecorder) DefaultCallback(c, activity interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DefaultCallback", reflect.TypeOf((*MockFederatingProtocol)(nil).DefaultCallback), c, activity)
-}
-
-// MaxInboxForwardingRecursionDepth mocks base method
-func (m *MockFederatingProtocol) MaxInboxForwardingRecursionDepth(c context.Context) int {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "MaxInboxForwardingRecursionDepth", c)
-	ret0, _ := ret[0].(int)
-	return ret0
-}
-
-// MaxInboxForwardingRecursionDepth indicates an expected call of MaxInboxForwardingRecursionDepth
-func (mr *MockFederatingProtocolMockRecorder) MaxInboxForwardingRecursionDepth(c interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "MaxInboxForwardingRecursionDepth", reflect.TypeOf((*MockFederatingProtocol)(nil).MaxInboxForwardingRecursionDepth), c)
-}
-
-// MaxDeliveryRecursionDepth mocks base method
-func (m *MockFederatingProtocol) MaxDeliveryRecursionDepth(c context.Context) int {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "MaxDeliveryRecursionDepth", c)
-	ret0, _ := ret[0].(int)
-	return ret0
-}
-
-// MaxDeliveryRecursionDepth indicates an expected call of MaxDeliveryRecursionDepth
-func (mr *MockFederatingProtocolMockRecorder) MaxDeliveryRecursionDepth(c interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "MaxDeliveryRecursionDepth", reflect.TypeOf((*MockFederatingProtocol)(nil).MaxDeliveryRecursionDepth), c)
-}
-
-// FilterForwarding mocks base method
+// FilterForwarding mocks base method.
 func (m *MockFederatingProtocol) FilterForwarding(c context.Context, potentialRecipients []*url.URL, a Activity) ([]*url.URL, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "FilterForwarding", c, potentialRecipients, a)
@@ -149,13 +107,13 @@ func (m *MockFederatingProtocol) FilterForwarding(c context.Context, potentialRe
 	return ret0, ret1
 }
 
-// FilterForwarding indicates an expected call of FilterForwarding
+// FilterForwarding indicates an expected call of FilterForwarding.
 func (mr *MockFederatingProtocolMockRecorder) FilterForwarding(c, potentialRecipients, a interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "FilterForwarding", reflect.TypeOf((*MockFederatingProtocol)(nil).FilterForwarding), c, potentialRecipients, a)
 }
 
-// GetInbox mocks base method
+// GetInbox mocks base method.
 func (m *MockFederatingProtocol) GetInbox(c context.Context, r *http.Request) (vocab.ActivityStreamsOrderedCollectionPage, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetInbox", c, r)
@@ -164,8 +122,67 @@ func (m *MockFederatingProtocol) GetInbox(c context.Context, r *http.Request) (v
 	return ret0, ret1
 }
 
-// GetInbox indicates an expected call of GetInbox
+// GetInbox indicates an expected call of GetInbox.
 func (mr *MockFederatingProtocolMockRecorder) GetInbox(c, r interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetInbox", reflect.TypeOf((*MockFederatingProtocol)(nil).GetInbox), c, r)
+}
+
+// MaxDeliveryRecursionDepth mocks base method.
+func (m *MockFederatingProtocol) MaxDeliveryRecursionDepth(c context.Context) int {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "MaxDeliveryRecursionDepth", c)
+	ret0, _ := ret[0].(int)
+	return ret0
+}
+
+// MaxDeliveryRecursionDepth indicates an expected call of MaxDeliveryRecursionDepth.
+func (mr *MockFederatingProtocolMockRecorder) MaxDeliveryRecursionDepth(c interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "MaxDeliveryRecursionDepth", reflect.TypeOf((*MockFederatingProtocol)(nil).MaxDeliveryRecursionDepth), c)
+}
+
+// MaxInboxForwardingRecursionDepth mocks base method.
+func (m *MockFederatingProtocol) MaxInboxForwardingRecursionDepth(c context.Context) int {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "MaxInboxForwardingRecursionDepth", c)
+	ret0, _ := ret[0].(int)
+	return ret0
+}
+
+// MaxInboxForwardingRecursionDepth indicates an expected call of MaxInboxForwardingRecursionDepth.
+func (mr *MockFederatingProtocolMockRecorder) MaxInboxForwardingRecursionDepth(c interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "MaxInboxForwardingRecursionDepth", reflect.TypeOf((*MockFederatingProtocol)(nil).MaxInboxForwardingRecursionDepth), c)
+}
+
+// PostInboxRequestBodyHook mocks base method.
+func (m *MockFederatingProtocol) PostInboxRequestBodyHook(c context.Context, r *http.Request, activity Activity) (context.Context, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "PostInboxRequestBodyHook", c, r, activity)
+	ret0, _ := ret[0].(context.Context)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// PostInboxRequestBodyHook indicates an expected call of PostInboxRequestBodyHook.
+func (mr *MockFederatingProtocolMockRecorder) PostInboxRequestBodyHook(c, r, activity interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "PostInboxRequestBodyHook", reflect.TypeOf((*MockFederatingProtocol)(nil).PostInboxRequestBodyHook), c, r, activity)
+}
+
+// ResolveInboxIRIs mocks base method.
+func (m *MockFederatingProtocol) ResolveInboxIRIs(c context.Context, receivers, hiddenReceivers []*url.URL) ([]*url.URL, []*url.URL, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "ResolveInboxIRIs", c, receivers, hiddenReceivers)
+	ret0, _ := ret[0].([]*url.URL)
+	ret1, _ := ret[1].([]*url.URL)
+	ret2, _ := ret[2].(error)
+	return ret0, ret1, ret2
+}
+
+// ResolveInboxIRIs indicates an expected call of ResolveInboxIRIs.
+func (mr *MockFederatingProtocolMockRecorder) ResolveInboxIRIs(c, receivers, hiddenReceivers interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ResolveInboxIRIs", reflect.TypeOf((*MockFederatingProtocol)(nil).ResolveInboxIRIs), c, receivers, hiddenReceivers)
 }
